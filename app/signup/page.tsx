@@ -1,4 +1,6 @@
 'use client';
+import { errorMessages } from '@/validation/validationErrors';
+import { zodResolver } from '@hookform/resolvers/zod';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -9,16 +11,76 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+const requiredInputSize = 1; // required fields in zod use the method .min(1)
+const minPasswordSize = 4;
+const maxPasswordSize = 10;
+
+const signUpSchema = z.object({
+  firstName: z
+    .string()
+    .min(requiredInputSize, { message: errorMessages().required }),
+  familyName: z
+    .string()
+    .min(requiredInputSize, { message: errorMessages().required }),
+  email: z.string().email({ message: errorMessages().email }),
+  password: z
+    .string()
+    .min(minPasswordSize, {
+      message: errorMessages(minPasswordSize).minTextSize,
+    })
+    .max(maxPasswordSize, {
+      message: errorMessages(maxPasswordSize).maxTextSize,
+    }),
+});
+
+type SignUpSchema = z.infer<typeof signUpSchema>;
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const {
+    register,
+    handleSubmit,
+    setError,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<SignUpSchema>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      email: '',
+      familyName: '',
+      firstName: '',
+      password: '',
+    },
+  });
+
+  const handleSignUp = (data: SignUpSchema) => {
+    const userInfo = {
+      firstName: data.firstName,
+      familyName: data.familyName,
+      email: data.email,
+      password: data.password,
+    };
+
+    const usersData = localStorage.getItem('usersData');
+    let users = usersData ? JSON.parse(usersData) : [];
+
+    const alreadyRegisteredEmail = users.filter(
+      (el: typeof userInfo) => el.email === userInfo.email
+    );
+
+    if (alreadyRegisteredEmail.length) {
+      setError('email', {
+        message: 'Email já se encontra cadastrado',
+      });
+    } else {
+      users.push(userInfo);
+      const usersDataString = JSON.stringify(users);
+      localStorage.setItem('usersData', usersDataString);
+      reset();
+      // login and route to main page
+    }
   };
 
   return (
@@ -38,56 +100,67 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box component="form" noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
-                name="firstName"
                 required
                 fullWidth
-                id="firstName"
+                disabled={isSubmitting}
                 label="Nome"
                 autoFocus
+                id="firstName"
+                error={Boolean(errors.firstName)}
+                helperText={errors.firstName?.message}
+                {...register('firstName')}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 required
                 fullWidth
-                id="lastName"
+                disabled={isSubmitting}
                 label="Sobrenome"
-                name="lastName"
                 autoComplete="family-name"
+                error={Boolean(errors.familyName)}
+                helperText={errors.familyName?.message}
+                {...register('familyName')}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
-                id="email"
+                disabled={isSubmitting}
                 label="Endereço de Email"
-                name="email"
                 autoComplete="email"
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message}
+                {...register('email')}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
-                name="password"
+                disabled={isSubmitting}
                 label="Senha"
                 type="password"
-                id="password"
+                error={Boolean(errors.password)}
+                helperText={errors.password?.message}
                 autoComplete="new-password"
+                {...register('password')}
               />
             </Grid>
           </Grid>
           <Button
-            type="submit"
+            type="button"
+            disabled={isSubmitting}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onClick={handleSubmit(handleSignUp)}
           >
             Sign Up
           </Button>

@@ -1,10 +1,17 @@
-import { Box, Grid, TextField } from '@mui/material';
+import { Box, Button, Grid, TextField } from '@mui/material';
 
 const ContactForm = () => {
   return (
-    <Box component="form" onSubmit={() => {}} noValidate sx={{ p: 3 }}>
+    <Box
+      component="form"
+      onSubmit={() => {}}
+      noValidate
+      sx={{ px: 1, pb: 4 }}
+      maxHeight={'70vh'}
+      overflow={'auto'}
+    >
       <Grid container spacing={2} rowSpacing={0.5}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} md={3}>
           <TextField
             margin="normal"
             required
@@ -17,7 +24,7 @@ const ContactForm = () => {
             autoComplete="Nome"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} md={3}>
           <TextField
             margin="normal"
             required
@@ -30,7 +37,7 @@ const ContactForm = () => {
             autoComplete="cpf"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} md={3}>
           <TextField
             margin="normal"
             required
@@ -43,7 +50,7 @@ const ContactForm = () => {
             autoComplete="telefone"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} md={3}>
           <TextField
             margin="normal"
             required
@@ -57,7 +64,7 @@ const ContactForm = () => {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} md={8}>
           <TextField
             margin="normal"
             required
@@ -70,7 +77,7 @@ const ContactForm = () => {
             autoComplete="logradouro"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} md={4}>
           <TextField
             margin="normal"
             required
@@ -83,7 +90,7 @@ const ContactForm = () => {
             autoComplete="complemento"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} md={4}>
           <TextField
             margin="normal"
             required
@@ -96,7 +103,7 @@ const ContactForm = () => {
             autoComplete="bairro"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} md={5}>
           <TextField
             margin="normal"
             required
@@ -109,7 +116,7 @@ const ContactForm = () => {
             autoComplete="localidade"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} md={3}>
           <TextField
             margin="normal"
             required
@@ -122,7 +129,7 @@ const ContactForm = () => {
             autoComplete="uf"
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6}>
           <TextField
             margin="normal"
             required
@@ -135,6 +142,8 @@ const ContactForm = () => {
             name="latitude"
             autoComplete="latitude"
           />
+        </Grid>
+        <Grid item xs={12} md={6}>
           <TextField
             margin="normal"
             required
@@ -147,6 +156,9 @@ const ContactForm = () => {
             name="longitude"
             autoComplete="longitude"
           />
+        </Grid>
+        <Grid item xs={12} justifyContent={'flex-end'} sx={{ mt: 1 }}>
+          <Button variant="contained">Cadastrar</Button>
         </Grid>
       </Grid>
     </Box>

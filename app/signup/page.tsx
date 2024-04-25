@@ -1,4 +1,5 @@
 'use client';
+import { login } from '@/api/auth/login';
 import { errorMessages } from '@/validation/validationErrors';
 import { zodResolver } from '@hookform/resolvers/zod';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -11,8 +12,10 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { LogInSchema } from '../login/page';
 
 const requiredInputSize = 1; // required fields in zod use the method .min(1)
 const minPasswordSize = 4;
@@ -54,7 +57,7 @@ export default function SignUp() {
       password: '',
     },
   });
-
+  const router = useRouter();
   const handleSignUp = (data: SignUpSchema) => {
     const userInfo = {
       firstName: data.firstName,
@@ -78,8 +81,13 @@ export default function SignUp() {
       users.push(userInfo);
       const usersDataString = JSON.stringify(users);
       localStorage.setItem('usersData', usersDataString);
+      const loginData: LogInSchema = {
+        email: userInfo.email,
+        password: userInfo.password,
+      };
+      login(loginData);
       reset();
-      // login and route to main page
+      router.push('/');
     }
   };
 

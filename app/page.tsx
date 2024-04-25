@@ -1,20 +1,14 @@
 'use client';
+import { isAuthenticated } from '@/api/auth/login';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 export default function Home() {
   const router = useRouter();
-  const isAuthenticated = false;
 
-  useEffect(() => {
-    // Logica de autenticação usando localStorage
+  // Logica de autenticação usando localStorage
+  if (isAuthenticated()) {
+    return <div>Main page</div>;
+  }
 
-    if (!isAuthenticated) {
-      router.push('/login');
-    }
-  }, []);
-
-  if (!isAuthenticated) return <div>Carregando...</div>;
-
-  return <div>Main page</div>;
+  router.push('/login');
 }

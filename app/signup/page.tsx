@@ -66,8 +66,8 @@ export default function SignUp() {
       password: data.password,
     };
 
-    const usersData = localStorage.getItem('usersData');
-    let users = usersData ? JSON.parse(usersData) : [];
+    const registeredUsers = localStorage.getItem('registeredUsers');
+    let users = registeredUsers ? JSON.parse(registeredUsers) : [];
 
     const alreadyRegisteredEmail = users.filter(
       (el: typeof userInfo) => el.email === userInfo.email
@@ -79,8 +79,8 @@ export default function SignUp() {
       });
     } else {
       users.push(userInfo);
-      const usersDataString = JSON.stringify(users);
-      localStorage.setItem('usersData', usersDataString);
+      const registeredUsersString = JSON.stringify(users);
+      localStorage.setItem('registeredUsers', registeredUsersString);
       const loginData: LogInSchema = {
         email: userInfo.email,
         password: userInfo.password,

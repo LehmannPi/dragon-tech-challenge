@@ -4,8 +4,6 @@ import { logout } from '@/api/auth/logout';
 import ContactForm from '@/components/ContactForm';
 import ContactList from '@/components/ContactList';
 import MapViewer from '@/components/MapViewer';
-import { errorMessages } from '@/validation/validationErrors';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Assignment,
   Contacts,
@@ -29,8 +27,6 @@ import {
 import { grey } from '@mui/material/colors';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
 const pageStyles = {
   grid: {
@@ -40,7 +36,6 @@ const pageStyles = {
     border: '1px solid',
     borderColor: 'divider',
     alignContent: 'center',
-    // justifyContent: 'center',
   },
   header: {
     fontWeight: 600,
@@ -55,46 +50,7 @@ const pageStyles = {
   },
 };
 
-const requiredInputSize = 1; // required fields in zod use the method .min(1)
-const minPasswordSize = 4;
-const maxPasswordSize = 10;
-
-const signUpSchema = z.object({
-  firstName: z
-    .string()
-    .min(requiredInputSize, { message: errorMessages().required }),
-  familyName: z
-    .string()
-    .min(requiredInputSize, { message: errorMessages().required }),
-  email: z.string().email({ message: errorMessages().email }),
-  password: z
-    .string()
-    .min(minPasswordSize, {
-      message: errorMessages(minPasswordSize).minTextSize,
-    })
-    .max(maxPasswordSize, {
-      message: errorMessages(maxPasswordSize).maxTextSize,
-    }),
-});
-
-type SignUpSchema = z.infer<typeof signUpSchema>;
-
 export default function Home() {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<SignUpSchema>({
-    resolver: zodResolver(signUpSchema),
-    defaultValues: {
-      email: '',
-      familyName: '',
-      firstName: '',
-      password: '',
-    },
-  });
   const router = useRouter();
 
   const [openContacts, setOpenContacts] = useState(false);
@@ -124,10 +80,11 @@ export default function Home() {
         <Button
           aria-label="logout"
           variant="contained"
+          size="small"
           sx={{
             position: 'fixed',
-            top: '1vh',
-            left: '1vh',
+            top: '1.5vh',
+            left: '1.5vh',
             backgroundColor: grey[500],
             '&:hover': { backgroundColor: grey[700] },
           }}
@@ -138,7 +95,7 @@ export default function Home() {
         </Button>
 
         {/* // ! Contacts Grid */}
-        <Grid item xs={12} sm={5} sx={pageStyles.grid}>
+        <Grid item xs={12} sm={6} md={5} sx={pageStyles.grid}>
           <Box sx={pageStyles.header}>
             <Typography variant="h6">Contatos</Typography>
           </Box>
@@ -167,7 +124,7 @@ export default function Home() {
               <Collapse in={openContacts} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   <ListItem>
-                    <p></p>
+                    <ContactList />
                   </ListItem>
                 </List>
               </Collapse>
@@ -194,7 +151,8 @@ export default function Home() {
               </ListItemButton>
               <Collapse in={openExcludeAccount} timeout="auto" unmountOnExit>
                 <ListItem>
-                  <ContactList />
+                  <p></p>
+                  {/* <ContactList /> */}
                 </ListItem>
               </Collapse>
             </List>
@@ -202,7 +160,7 @@ export default function Home() {
         </Grid>
 
         {/* // ! Map Grid */}
-        <Grid item xs={12} sm={7} sx={pageStyles.grid}>
+        <Grid item xs={12} sm={6} md={7} sx={pageStyles.grid}>
           <Box sx={pageStyles.header}>
             <Typography variant="h6">Mapa</Typography>
           </Box>

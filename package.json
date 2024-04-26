@@ -17,7 +17,6 @@
     "@hookform/resolvers": "^3.3.4",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
-    "cpf-cnpj-validator": "^1.0.3",
     "fast-equals": "^2.0.3",
     "next": "14.2.2",
     "react": "^18",

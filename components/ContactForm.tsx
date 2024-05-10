@@ -37,7 +37,7 @@ const registrySchema = z.object({
   cep: z.string().email({ message: errorMessages().email }),
   adress: z.string().email({ message: errorMessages().email }),
   adress2: z.string().email({ message: errorMessages().email }),
-  neighborgood: z.string().email({ message: errorMessages().email }),
+  neighborhood: z.string().email({ message: errorMessages().email }),
   city: z.string().email({ message: errorMessages().email }),
   state: z.string().email({ message: errorMessages().email }),
 
@@ -76,7 +76,7 @@ const ContactForm = () => {
       latitude: 0,
       longitude: 0,
       name: '',
-      neighborgood: '',
+      neighborhood: '',
       phone: '',
       state: '',
     },
@@ -97,7 +97,7 @@ const ContactForm = () => {
       if (validacep.test(cep)) {
         //Preenche os campos com "..." enquanto consulta webservice.
         setValue('adress', '...');
-        setValue('neighborgood', '...');
+        setValue('neighborhood', '...');
         setValue('city', '...');
         setValue('state', '...');
 
@@ -147,6 +147,7 @@ const ContactForm = () => {
             required
             fullWidth
             variant="standard"
+            inputProps={{ 'data-testid': 'name-input' }}
             size="small"
             id="Nome"
             label="Nome"
@@ -162,6 +163,7 @@ const ContactForm = () => {
             required
             fullWidth
             variant="standard"
+            inputProps={{ 'data-testid': 'cpf-input' }}
             size="small"
             id="cpf"
             label="CPF"
@@ -177,6 +179,7 @@ const ContactForm = () => {
             required
             fullWidth
             variant="standard"
+            inputProps={{ 'data-testid': 'phone-input' }}
             size="small"
             id="telefone"
             label="Telefone"
@@ -192,6 +195,7 @@ const ContactForm = () => {
             required
             fullWidth
             variant="standard"
+            inputProps={{ 'data-testid': 'cep-input' }}
             size="small"
             id="cep"
             label="CEP"
@@ -212,6 +216,7 @@ const ContactForm = () => {
             required
             fullWidth
             variant="standard"
+            inputProps={{ 'data-testid': 'adress-input' }}
             size="small"
             id="logradouro"
             label="Logradouro"
@@ -227,6 +232,7 @@ const ContactForm = () => {
             required
             fullWidth
             variant="standard"
+            inputProps={{ 'data-testid': 'adress2-input' }}
             size="small"
             id="complemento"
             label="Complemento"
@@ -242,13 +248,14 @@ const ContactForm = () => {
             required
             fullWidth
             variant="standard"
+            inputProps={{ 'data-testid': 'neighborhood-input' }}
             size="small"
             id="bairro"
             label="Bairro"
             autoComplete="bairro"
-            error={Boolean(errors.neighborgood)}
-            helperText={errors.neighborgood?.message}
-            {...register('neighborgood')}
+            error={Boolean(errors.neighborhood)}
+            helperText={errors.neighborhood?.message}
+            {...register('neighborhood')}
           />
         </Grid>
         <Grid item xs={12} sm={6} md={5}>
@@ -257,6 +264,7 @@ const ContactForm = () => {
             required
             fullWidth
             variant="standard"
+            inputProps={{ 'data-testid': 'city-input' }}
             size="small"
             id="localidade"
             label="Cidade"
@@ -272,6 +280,7 @@ const ContactForm = () => {
             required
             fullWidth
             variant="standard"
+            inputProps={{ 'data-testid': 'state-input' }}
             size="small"
             id="uf"
             label="Estado"
@@ -287,6 +296,7 @@ const ContactForm = () => {
             required
             fullWidth
             variant="standard"
+            inputProps={{ 'data-testid': 'lat-input' }}
             size="small"
             type="number"
             id="latitude"
@@ -305,6 +315,7 @@ const ContactForm = () => {
             required
             fullWidth
             variant="standard"
+            inputProps={{ 'data-testid': 'lng-input' }}
             size="small"
             type="number"
             id="longitude"
